@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\{
+    DashboardController,
+};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +17,29 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
+});
+
+Route::group([
+    'middleware' => ['auth', 'role:admin,panitia,pemilih'],
+], function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::group([
+        'middleware' => 'role:admin',
+    ], function () {
+        //
+    });
+
+    Route::group([
+        'middleware' => 'role:panitia',
+    ], function () {
+        //
+    });
+
+    Route::group([
+        'middleware' => 'role:pemilih',
+    ], function () {
+        //
+    });
 });
