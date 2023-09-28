@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{
     DashboardController,
+    VoterController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +29,9 @@ Route::group([
     Route::group([
         'middleware' => 'role:admin',
     ], function () {
-        //
+        // Pemilih
+        Route::get('voters/data', [VoterController::class, 'data'])->name('voters.data');
+        Route::resource('voters', VoterController::class);
     });
 
     Route::group([
