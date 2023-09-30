@@ -32,7 +32,8 @@ Route::group([
     ], function () {
         // Jadwal Pemilihan
         Route::get('pemilihan/data', [PemilihanController::class, 'data'])->name('pemilihan.data');
-        Route::resource('pemilihan', PemilihanController::class);
+        Route::resource('pemilihan', PemilihanController::class)->except('edit', 'create');
+        Route::put('pemilihan/{pemilihan}/update_status', [PemilihanController::class, 'updateStatus'])->name('pemilihan.update_status');
     });
 
     Route::group([

@@ -19,7 +19,7 @@ class PemilihanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function data(Request $request)
+    public function data()
     {
         $query = Pemilihan::orderBy('id', 'DESC');
 
@@ -35,14 +35,25 @@ class PemilihanController extends Controller
                 return '<span class="badge bg-' . $query->statusColor() . '">' . $query->status_pemilihan . '</span>';
             })
             ->addColumn('aksi', function ($query) {
-                // if ($query->status_pemilihan === 'Selesai') {
-                //     return '';
-                // } else {
-                // }
-                return '
-                <button onclick="editForm(`' . route('pemilihan.show', $query->id) . '`)" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i></button>
-                <button onclick="deleteData(`' . route('pemilihan.show', $query->id) . '`, `' . $query->deskripsi_pemilihan . '`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+
+                $aksi = "";
+
+                if ($query->status_pemilihan == "Sedang Berlangsung" || $query->status_pemilihan == "Selesai") {
+                    $aksi .= '
+                     <button class="btn btn-sm btn-success disabled"><i class="fas fa-times"></i></button>
+                     <button onclick="editForm(`' . route('pemilihan.show', $query->id) . '`)" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i></button>
+                     <button onclick="deleteData(`' . route('pemilihan.show', $query->id) . '`, `' . $query->deskripsi_pemilihan . '`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+
+                    ';
+                } else {
+                    $aksi .= '
+                    <button onclick="updateStatus(`' . route('pemilihan.update_status', $query->id) . '`, `' . $query->deskripsi_pemilihan . '`)" class="btn btn-sm btn-success"><i class="fas fa-check"></i></button>
+                    <button onclick="editForm(`' . route('pemilihan.show', $query->id) . '`)" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i></button>
+                    <button onclick="deleteData(`' . route('pemilihan.show', $query->id) . '`, `' . $query->deskripsi_pemilihan . '`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 ';
+                }
+
+                return $aksi;
             })
             ->escapeColumns([])
             ->make(true);
@@ -175,5 +186,23 @@ class PemilihanController extends Controller
         $pemilihan->delete();
 
         return response()->json(['data' => NULL, 'message' => 'Pemilihan berhasil dihapus']);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function updateStatus(Request $request, Pemilihan $pemilihan)
+    {
+        $PemilihanCount = Pemilihan::where('status_pemilihan', 'Sedang Berlangsung')->count();
+
+        if ($PemilihanCount > 0) {
+            return response()->json(['message' => 'Ada pemilihan lain yang sedang berlangsung, sehingga tidak dapat memulai pemilihan baru.'], 422);
+        }
+
+        $pemilihan->update([
+            'status_pemilihan' => 'Sedang Berlangsung'
+        ]);
+
+        return response()->json(['data' => $pemilihan, 'message' => 'Status pemilihan berhasil diperbarui.']);
     }
 }

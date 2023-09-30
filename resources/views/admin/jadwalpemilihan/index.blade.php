@@ -287,5 +287,59 @@
                 }
             });
         }
+
+        function updateStatus(url, name) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: true,
+            })
+            swalWithBootstrapButtons.fire({
+                title: 'Apakah anda yakin?',
+                text: 'Anda akan mengubah status pelaksanaan ' + name + ' ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#aaa',
+                confirmButtonText: 'Iya',
+                cancelButtonText: 'Batalkan',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "PUT",
+                        url: url,
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.status = 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
+                            }
+                            table.ajax.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            // Menampilkan pesan error
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Opps! Gagal',
+                                text: xhr.responseJSON.message,
+                                showConfirmButton: true,
+                            });
+
+                            // Refresh tabel atau lakukan operasi lain yang diperlukan
+                            table.ajax.reload();
+
+                        }
+                    });
+                }
+            });
+        }
     </script>
 @endpush
