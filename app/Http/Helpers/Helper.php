@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 if (!function_exists('upload')) {
     function upload($directory, $file, $filename = "")
@@ -164,5 +165,29 @@ if (!function_exists('hitung_umur')) {
         $d = $today->diff($birthDate)->d;
 
         return $y . " tahun " . $m . " bulan " . $d . " hari";
+    }
+}
+
+if (!function_exists('hitung_hari')) {
+    function hitung_hari($startDate, $endDate)
+    {
+        // Tanggal pertama
+        $tanggal1 = Carbon::parse($startDate); // Ganti dengan tanggal dan waktu yang sesuai
+
+        // Tanggal kedua
+        $tanggal2 = Carbon::parse($endDate); // Ganti dengan tanggal dan waktu yang sesuai
+
+        // Menghitung selisih waktu antara kedua tanggal
+        $selisih = $tanggal1->diff($tanggal2);
+
+        // Mendapatkan jumlah hari
+        $jumlahHari = $selisih->days;
+
+        // Mendapatkan jam, menit, dan detik
+        $jam = $selisih->h;
+        $menit = $selisih->i;
+        $detik = $selisih->s;
+
+        return $jumlahHari . " hari dari pelaksanaan.";
     }
 }

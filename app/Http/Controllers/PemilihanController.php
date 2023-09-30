@@ -26,7 +26,10 @@ class PemilihanController extends Controller
         return datatables($query)
             ->addIndexColumn()
             ->addColumn('tanggal_pemilihan', function ($query) {
-                return tanggal_indonesia($query->tanggal_mulai_pemilihan);
+                if ($query->status_pemilihan == 'Selesai') {
+                    return tanggal_indonesia($query->tanggal_mulai_pemilihan);
+                }
+                return tanggal_indonesia($query->tanggal_mulai_pemilihan) . ' <br> <span class="badge badge-info">' . hitung_hari($query->tanggal_mulai_pemilihan, $query->tanggal_selesai_pemilihan) .  '</span>';
             })
             ->addColumn('status_pemilihan', function ($query) {
                 return '<span class="badge bg-' . $query->statusColor() . '">' . $query->status_pemilihan . '</span>';
