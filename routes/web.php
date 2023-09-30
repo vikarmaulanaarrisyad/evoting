@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{
     DashboardController,
+    PemilihanController,
     VoterController,
 };
 use Illuminate\Support\Facades\Route;
@@ -29,9 +30,9 @@ Route::group([
     Route::group([
         'middleware' => 'role:admin',
     ], function () {
-        // Pemilih
-        Route::get('voters/data', [VoterController::class, 'data'])->name('voters.data');
-        Route::resource('voters', VoterController::class);
+        // Jadwal Pemilihan
+        Route::get('pemilihan/data', [PemilihanController::class, 'data'])->name('pemilihan.data');
+        Route::resource('pemilihan', PemilihanController::class);
     });
 
     Route::group([

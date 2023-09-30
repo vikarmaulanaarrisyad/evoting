@@ -11,10 +11,13 @@
     <script>
         $('.datepicker').datetimepicker({
             icons: {
-                time: 'far fa-clock'
+                date: 'far fa-calendar'
             },
             format: 'YYYY-MM-DD',
-            locale: 'id'
+            locale: 'id',
+            minDate: new Date(),
+            daysOfWeekDisabled: [0, 7], // untuk membatasi tanggal minimum pada hari ini
+            //autoclose: true,
         });
 
         $('.datetimepicker').datetimepicker({

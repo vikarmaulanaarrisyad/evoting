@@ -41,7 +41,16 @@
                  @if (Auth()->user()->hasRole('admin'))
                      <li class="nav-header">MASTER DATA</li>
                      <li class="nav-item">
-                         <a href="{{ route('voters.index') }}" class="nav-link {{ request()->is('voters*') ? 'active' : '' }}">
+                         <a href="{{ route('pemilihan.store') }}"
+                             class="nav-link {{ request()->is('pemilihan*') ? 'active' : '' }}">
+                             <i class="nav-icon fas fa-calendar-alt"></i>
+                             <p>
+                                 Jadwal Pemilihan
+                             </p>
+                         </a>
+                     </li>
+                     <li class="nav-item">
+                         <a href="" class="nav-link {{ request()->is('voters*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-users"></i>
                              <p>
                                  Data Pemilih
