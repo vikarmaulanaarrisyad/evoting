@@ -48,7 +48,7 @@ class PemilihanController extends Controller
                 } else {
                     $aksi .= '
                     <button onclick="updateStatus(`' . route('pemilihan.update_status', $query->id) . '`, `' . $query->deskripsi_pemilihan . '`)" class="btn btn-sm btn-success"><i class="fas fa-check"></i></button>
-                    <button onclick="editForm(`' . route('pemilihan.show', $query->id) . '`)" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i></button>
+                    <button onclick="editForm(`' . route('pemilihan.show', $query->id) . '`)" class="btn btn-sm bg-indigo"><i class="fas fa-pencil-alt"></i></button>
                     <button onclick="deleteData(`' . route('pemilihan.show', $query->id) . '`, `' . $query->deskripsi_pemilihan . '`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 ';
                 }

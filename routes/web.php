@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\{
     DashboardController,
+    KelasController,
     PemilihanController,
-    VoterController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +34,10 @@ Route::group([
         Route::get('pemilihan/data', [PemilihanController::class, 'data'])->name('pemilihan.data');
         Route::resource('pemilihan', PemilihanController::class)->except('edit', 'create');
         Route::put('pemilihan/{pemilihan}/update_status', [PemilihanController::class, 'updateStatus'])->name('pemilihan.update_status');
+
+        // Data Kelas
+        Route::get('kelas/data', [KelasController::class, 'data'])->name('kelas.data');
+        Route::resource('kelas', KelasController::class)->except('edit', 'create');
     });
 
     Route::group([
