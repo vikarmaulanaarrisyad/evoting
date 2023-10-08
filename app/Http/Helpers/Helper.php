@@ -150,7 +150,7 @@ if (!function_exists('terbilang')) {
 }
 
 if (!function_exists('hitung_umur')) {
-    function hitung_umur($tgl_lahir)
+    function hitung_umur($tgl_lahir, $tahun = false, $bulan = false, $hari = false)
     {
         $birthDate = new DateTime($tgl_lahir);
 
@@ -164,7 +164,11 @@ if (!function_exists('hitung_umur')) {
         $m = $today->diff($birthDate)->m;
         $d = $today->diff($birthDate)->d;
 
-        return $y . " tahun " . $m . " bulan " . $d . " hari";
+        // return $y . " tahun " . $m . " bulan " . $d . " hari";
+
+        if (!$tahun) return $y;
+        if ($bulan) return $m;
+        if ($hari) return $d;
     }
 }
 

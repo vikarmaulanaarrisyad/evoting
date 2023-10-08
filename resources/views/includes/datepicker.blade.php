@@ -20,6 +20,14 @@
             //autoclose: true,
         });
 
+        $('.datepicker1').datetimepicker({
+            icons: {
+                date: 'far fa-calendar'
+            },
+            format: 'YYYY-MM-DD',
+            locale: 'id',
+        });
+
         $('.datetimepicker').datetimepicker({
             icons: {
                 time: 'far fa-clock'

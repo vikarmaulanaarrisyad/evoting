@@ -58,7 +58,7 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="" class="nav-link {{ request()->is('voters*') ? 'active' : '' }}">
+                         <a href="{{ route('siswa.index') }}" class="nav-link {{ request()->is('siswa*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-users"></i>
                              <p>
                                  Data Siswa
