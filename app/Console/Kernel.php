@@ -2,31 +2,46 @@
 
 namespace App\Console;
 
-use App\Jobs\ProcessUpdateData;
+use App\Models\Pemilihan;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * Define the application's command schedule.
-     */
-    protected function schedule(Schedule $schedule): void
-    {
-        // $schedule->command('inspire')->hourly();
-        $tanggalTertentu = '2023-09-30'; // Tanggal yang diinginkan
-        $tanggalSekarang = now()->toDateString();
+    protected $commands = [];
 
-        if ($tanggalSekarang === $tanggalTertentu) {
-            // Jadwalkan tugas pembaruan pada tanggal tertentu
-            $schedule->job(new ProcessUpdateData)->daily(); // Ubah jadwal sesuai kebutuhan
-        }
+    protected function schedule(Schedule $schedule)
+    {
+        $now = Carbon::now();
+        $tanggalSekarang = $now->format('Y-m-d');
+
+        $schedule->call(function () use ($tanggalSekarang) {
+            $pemilihan = Pemilihan::where('status_pemilihan', 'Belum Dimulai')
+                ->where('tanggal_mulai_pemilihan', $tanggalSekarang)
+                ->first();
+
+            if ($pemilihan) {
+                $pemilihan->update([
+                    'status_pemilihan' => 'Sedang Berlangsung'
+                ]);
+            }
+        })->dailyAt('06:30');
+
+        $schedule->call(function () use ($tanggalSekarang) {
+            $pemilihan = Pemilihan::where('status_pemilihan', 'Sedang Berlangsung')
+                ->where('tanggal_selesai_pemilihan', $tanggalSekarang)
+                ->first();
+
+            if ($pemilihan) {
+                $pemilihan->update([
+                    'status_pemilihan' => 'Selesai'
+                ]);
+            }
+        })->dailyAt('23:59');
     }
 
-    /**
-     * Register the commands for the application.
-     */
-    protected function commands(): void
+    protected function commands()
     {
         $this->load(__DIR__ . '/Commands');
 

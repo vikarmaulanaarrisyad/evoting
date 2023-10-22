@@ -43,7 +43,7 @@ class SiswaController extends Controller
             })
             ->addColumn('aksi', function ($query) {
                 return '
-                <button class="btn btn-sm btn-primary" onclick=editForm(`' . route('siswa.edit', $query->id) . '`)><i class="fa fa-search" aria-hidden="true"></i></button>
+                <button class="btn btn-sm btn-primary" onclick=editForm(`' . route('siswa.show', $query->id) . '`)><i class="fa fa-search" aria-hidden="true"></i></button>
                 ';
             })
             ->escapeColumns([])
@@ -77,7 +77,6 @@ class SiswaController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors(), 'message' => 'Silahkan periksa kembali isian anda.'], 422);
         }
-
 
         try {
             DB::beginTransaction();
@@ -116,7 +115,7 @@ class SiswaController extends Controller
      */
     public function show(Siswa $siswa)
     {
-        return view('admin.siswa.edit');
+        return view('admin.siswa.show', compact('siswa'));
     }
 
     /**
@@ -124,7 +123,7 @@ class SiswaController extends Controller
      */
     public function edit(Siswa $siswa)
     {
-        return view('admin.siswa.edit', compact('siswa'));
+        return view('admin.siswa.show', compact('siswa'));
     }
 
     /**
@@ -132,7 +131,33 @@ class SiswaController extends Controller
      */
     public function update(Request $request, Siswa $siswa)
     {
-        //
+        $rules = [
+            'nama_siswa' => 'required',
+            'nisn_siswa' => 'required|unique:siswas,nisn_siswa',
+            'nis_siswa' => 'required|unique:siswas,nis_siswa',
+            'tempat_lahir_siswa' => 'required',
+            'tanggal_lahir_siswa' => 'required',
+            'email' => 'required|unique:users,email',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'message' => 'Silahkan periksa kembali isian anda.'], 422);
+        }
+
+        try {
+            DB::beginTransaction();
+            // Update to siswa table
+
+            DB::commit();
+
+            return response()->json(['data' => $siswa, 'message' => 'Data berhasil disimpan.']);
+        } catch (\Throwable $th) {
+            return $th;
+            DB::rollBack();
+            return response()->json(['errors' => $th, 'message' => 'Data gagal disimpan'], 422);
+        }
     }
 
     /**
@@ -140,6 +165,11 @@ class SiswaController extends Controller
      */
     public function destroy(Siswa $siswa)
     {
-        //
+        $user = User::where('id', $siswa->user_id)->first();
+
+        $siswa->delete();
+        $user->delete();
+
+        return response()->json(['data' => $siswa, 'message' => 'Data berhasil dihapus.']);
     }
 }

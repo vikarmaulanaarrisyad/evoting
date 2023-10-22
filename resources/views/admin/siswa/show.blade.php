@@ -14,6 +14,12 @@
     <div class="row">
         <div class="col-lg-12 col-md-12">
             <x-card>
+                <x-slot name="header">
+                    <h5>
+                        <a href="{{ route('siswa.index') }}"> <i class="fas fa-arrow-alt-circle-left"></i>
+                            Kembali</a>
+                    </h5>
+                </x-slot>
                 <div class="row">
                     <div class="col-lg-2 col-md-2">
                         <img src="{{ asset('assets/image/siswa_avatar.png') }}" width="100px" height="100px"

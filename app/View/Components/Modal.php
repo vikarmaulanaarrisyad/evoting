@@ -14,11 +14,13 @@ class Modal extends Component
 
     public $size;
     public $method;
+    public $enctype;
 
-    public function __construct($size = 'modal-md', $method = 'post')
+    public function __construct($size = 'modal-md', $method = 'post', $enctype = 'multipart/form-data')
     {
         $this->size = $size;
         $this->method = $method;
+        $this->enctype = $enctype;
     }
 
     /**

@@ -15,6 +15,9 @@
                     @if (auth()->user()->hasRole('admin'))
                         <button onclick="addForm(`{{ route('siswa.store') }}`)" class="btn btn-primary"><i
                                 class="fas fa-plus-circle"></i> Tambah</button>
+                        <button onclick="importData(`{{ route('siswa.store') }}`)" class="btn btn-success"><i
+                                class="fas fa-file-excel"></i>
+                            Import</button>
                     @else
                         <a href="{{ url('/siswa.store') }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i>
                             Tambah</a>
@@ -39,14 +42,17 @@
     </div>
 
     @includeIf('admin.siswa.form')
+    @includeIf('admin.siswa.import')
 @endsection
 
 @includeIf('includes.datatables')
 @includeIf('includes.datepicker')
+@include('includes.dropzone')
 
 @push('scripts')
     <script>
         let modal = '#modal-form';
+        let modalImport = '#import';
         let button = '#submitBtn';
         let table;
 
@@ -245,6 +251,15 @@
                     });
                 }
             });
+        }
+
+        function importData(url, title = 'Upload Data Siswa') {
+            $(modalImport).modal('show');
+            $(`${modalImport} .modal-title`).text(title);
+            $(`${modalImport} form`).attr('action', url);
+            $(`${modalImport} [name=_method]`).val('POST');
+            $(`${modalImport} #spinner-border`).hide();
+            resetForm(`${modal} form`);
         }
     </script>
 @endpush
