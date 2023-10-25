@@ -260,6 +260,7 @@
             $(`${modalImport} [name=_method]`).val('POST');
             $(`${modalImport} #spinner-border`).hide();
             resetForm(`${modal} form`);
+
         }
     </script>
 @endpush

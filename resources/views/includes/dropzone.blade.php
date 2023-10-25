@@ -9,7 +9,7 @@
 
 @push('scripts')
     <script>
-        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').attr("content");
 
         Dropzone.autoDiscover = false;
         var previewNode = document.querySelector("#template");

@@ -28,6 +28,11 @@ function resetForm(selector) {
         $(selector).find(".custom-file-label").text("Choose file");
     }
 
+    // Mengganti teks pada label dengan "Choose file"
+    $(".custom-file-input")
+        .next(".custom-file-label")
+        .text("Choose file");
+
     $(".select2").trigger("change");
     $(
         ".form-control, .custom-select, [type=radio], [type=checkbox], [type=file], .select2, .note-editor"
