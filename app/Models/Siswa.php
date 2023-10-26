@@ -25,4 +25,5 @@ class Siswa extends Model
 
         return $color;
     }
+    
 }

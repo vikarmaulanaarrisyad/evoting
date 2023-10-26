@@ -29,9 +29,8 @@ function resetForm(selector) {
     }
 
     // Mengganti teks pada label dengan "Choose file"
-    $(".custom-file-input")
-        .next(".custom-file-label")
-        .text("Choose file");
+    $(".custom-file-input").next(".custom-file-label").text("Choose file");
+    $(".custom-file-input").val("");
 
     $(".select2").trigger("change");
     $(

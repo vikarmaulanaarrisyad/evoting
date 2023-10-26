@@ -43,6 +43,7 @@ Route::group([
         // Siswa
         Route::get('siswa/data', [SiswaController::class, 'data'])->name('siswa.data');
         Route::resource('siswa', SiswaController::class);
+        Route::post('siswa/import-excel', [SiswaController::class, 'importExcel'])->name('siswa.import_excel');
     });
 
     Route::group([

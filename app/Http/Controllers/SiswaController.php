@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\SiswaImport;
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
@@ -171,5 +173,30 @@ class SiswaController extends Controller
         $user->delete();
 
         return response()->json(['data' => $siswa, 'message' => 'Data berhasil dihapus.']);
+    }
+
+    /**
+     * Import File Excel
+     */
+
+    public function importExcel(Request $request)
+    {
+        // validasi inputan
+        $rules = [
+            'upload' => 'required|mimes:xls,xlsx,csv',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'message' => 'Gagal di unggah, silahkan cek kembali file unggahan anda.'], 422);
+        }
+
+        // mendapatkan file input
+        $file = $request->file('upload');
+
+        Excel::import(new SiswaImport, $file);
+
+        return response()->json(['message' => 'Data berhasil diunggah']);
     }
 }

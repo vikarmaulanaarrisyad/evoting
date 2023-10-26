@@ -15,7 +15,7 @@
                     @if (auth()->user()->hasRole('admin'))
                         <button onclick="addForm(`{{ route('siswa.store') }}`)" class="btn btn-primary"><i
                                 class="fas fa-plus-circle"></i> Tambah</button>
-                        <button onclick="importData(`{{ route('siswa.store') }}`)" class="btn btn-success"><i
+                        <button onclick="importData(`{{ route('siswa.import_excel') }}`)" class="btn btn-success"><i
                                 class="fas fa-file-excel"></i>
                             Import</button>
                     @else
@@ -168,6 +168,7 @@
                 })
                 .done(response => {
                     $(modal).modal('hide');
+                    $(modalImport).modal('hide');
                     if (response.status = 200) {
                         Swal.fire({
                             icon: 'success',
@@ -260,7 +261,6 @@
             $(`${modalImport} [name=_method]`).val('POST');
             $(`${modalImport} #spinner-border`).hide();
             resetForm(`${modal} form`);
-
         }
     </script>
 @endpush
