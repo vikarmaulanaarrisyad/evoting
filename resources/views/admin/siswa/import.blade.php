@@ -5,6 +5,28 @@
 
     @method('POST')
     <div class="row">
+        <div class="col-lg-12 col-md-12 col-12">
+            <div class="alert alert-light alert-dismissible">
+                <h5><i class="icon fas fa-info"></i> Pengumuman!</h5>
+                <ul>
+                    <li>
+                        <h6>
+                            Silahkan download <a class="btn btn-sm btn-success"
+                                href="{{ asset('assets/excel/contoh.xls') }}" <download><i class="fas fa-download"></i>
+                                </download>
+                                Template Excel</a>
+                        </h6>
+                    </li>
+                    <li>
+                        <h6>
+                            Upload berulang tidak akan bermasalah
+                        </h6>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <div class="form-group">
                 <input type="file" class="custom-file-input" id="customFile" name="upload">

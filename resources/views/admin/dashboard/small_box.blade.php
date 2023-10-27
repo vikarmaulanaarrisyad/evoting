@@ -2,11 +2,11 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>150</h3>
+                    <h3>{{ $jumlahPemilih }}</h3>
                     <p>Jumlah Pemilih</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
+                    <i class="fas fa-users"></i>
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>44</h3>
+                    <h3>{{ $pemilihSudahMemilih }}</h3>
                     <p>Pemilih yang sudah memilih</p>
                 </div>
                 <div class="icon">
@@ -39,7 +39,7 @@
 
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>65</h3>
+                    <h3>{{ $pemilihBelumMemilih }}</h3>
                     <p>Pemilih yang belum memilih</p>
                 </div>
                 <div class="icon">

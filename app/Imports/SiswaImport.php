@@ -19,28 +19,37 @@ class SiswaImport implements ToCollection, WithHeadingRow
 
             // Transaksi Database
             DB::transaction(function () use ($row, $nisn_siswa) {
-                $user = User::updateOrCreate(
-                    ['username' => $nisn_siswa],
-                    [
-                        'name'     => $row['nama'],
-                        'email'    => $row['email'],
-                        'password' => Hash::make($nisn_siswa),
-                        'role_id'  => 3,
-                    ]
-                );
+                try {
+                    $user = User::updateOrCreate(
+                        ['username' => $nisn_siswa],
+                        [
+                            'name'     => $row['nama'],
+                            'username'  => $nisn_siswa,
+                            'email'     => $row['email'],
+                            'password' => Hash::make($nisn_siswa),
+                            'role_id'  => 3,
+                        ]
+                    );
 
-                Siswa::updateOrCreate(
-                    ['nisn_siswa' => $nisn_siswa],
-                    [
-                        'user_id'                => $user->id,
-                        'nama_siswa'             => $row['nama'],
-                        'nis_siswa'              => $row['nis_siswa'],
-                        'tingkat_siswa'          => $row['tingkat'],
-                        'tempat_lahir_siswa'     => $row['tempat_lahir'],
-                        'tanggal_lahir_siswa'    => date("Y-m-d", strtotime($row['tanggal_lahir'])),
-                        'status_pemilihan_siswa' => 'Belum Memilih',
-                    ]
-                );
+                    Siswa::updateOrCreate(
+                        ['user_id' => $user->id],
+                        [
+                            'user_id'                => $user->id,
+                            'nama_siswa'             => $row['nama'],
+                            'nis_siswa'              => $row['nis_siswa'],
+                            'nisn_siswa'              => $nisn_siswa,
+                            'tingkat_siswa'          => $row['tingkat'],
+                            'tempat_lahir_siswa'     => $row['tempat_lahir'],
+                            'tanggal_lahir_siswa'    => date("Y-m-d", strtotime($row['tanggal_lahir'])),
+                            'status_pemilihan_siswa' => 'Belum Memilih',
+                        ]
+                    );
+
+                    DB::commit();
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    DB::rollBack();
+                }
             });
         }
     }

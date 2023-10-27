@@ -41,9 +41,12 @@ Route::group([
         Route::resource('kelas', KelasController::class)->except('edit', 'create');
 
         // Siswa
-        Route::get('siswa/data', [SiswaController::class, 'data'])->name('siswa.data');
-        Route::resource('siswa', SiswaController::class);
-        Route::post('siswa/import-excel', [SiswaController::class, 'importExcel'])->name('siswa.import_excel');
+        Route::get('/siswa/data', [SiswaController::class, 'data'])->name('siswa.data');
+        Route::resource('/siswa', SiswaController::class);
+        Route::get('/siswa/export/excel', [SiswaController::class, 'exportExcel'])->name('siswa.export_excel');
+        Route::post('/siswa/import-excel', [SiswaController::class, 'importExcel'])->name('siswa.import_excel');
+
+        // Kandidat
     });
 
     Route::group([

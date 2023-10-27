@@ -33,15 +33,5 @@ class UserTableSeeder extends Seeder
         $panitia->email_verified_at = Date('Y-m-d H:i:s');
         $panitia->remember_token = rand(1000000, 10000000000);
         $panitia->save();
-
-        $pemilih = new User;
-        $pemilih->name = 'Pemilih';
-        $pemilih->username = 'pemilih';
-        $pemilih->email = 'pemilih@gmail.com';
-        $pemilih->password = bcrypt('pemilih');
-        $pemilih->role_id = 3;
-        $pemilih->email_verified_at = Date('Y-m-d H:i:s');
-        $pemilih->remember_token = rand(1000000, 10000000000);
-        $pemilih->save();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SiswaExport;
 use App\Imports\SiswaImport;
 use App\Models\Siswa;
 use App\Models\User;
@@ -178,7 +179,6 @@ class SiswaController extends Controller
     /**
      * Import File Excel
      */
-
     public function importExcel(Request $request)
     {
         // validasi inputan
@@ -198,5 +198,17 @@ class SiswaController extends Controller
         Excel::import(new SiswaImport, $file);
 
         return response()->json(['message' => 'Data berhasil diunggah']);
+    }
+
+    /**
+     * Export Excel
+     */
+    public function exportExcel()
+    {
+        $siswa = Siswa::all();
+        $data = $siswa->setHidden(['photo', 'created_at', 'updated_at', 'user_id', 'id','photo', 'tingkat_siswa'])->toArray();
+        $excel = new SiswaExport($data);
+
+        return Excel::download($excel, 'Daftar_Pemilih_' . date('Y-m-d-his') . '.xlsx');
     }
 }

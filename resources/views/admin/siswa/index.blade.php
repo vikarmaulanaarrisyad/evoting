@@ -7,21 +7,27 @@
     <li class="breadcrumb-item">Siswa</li>
 @endsection
 
+@push('css')
+    <style>
+        .btn.btn-success {
+            text-decoration: none;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="row">
         <div class="col-lg-12 col-md-12 col-12">
             <x-card>
                 <x-slot name="header">
-                    @if (auth()->user()->hasRole('admin'))
+                    <div class="float-right btn-group">
                         <button onclick="addForm(`{{ route('siswa.store') }}`)" class="btn btn-primary"><i
-                                class="fas fa-plus-circle"></i> Tambah</button>
-                        <button onclick="importData(`{{ route('siswa.import_excel') }}`)" class="btn btn-success"><i
+                                class="fas fa-plus-circle"></i> Tambah Data</button>
+                        <button onclick="importData(`{{ route('siswa.import_excel') }}`)" class="btn btn-warning"><i
                                 class="fas fa-file-excel"></i>
-                            Import</button>
-                    @else
-                        <a href="{{ url('/siswa.store') }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i>
-                            Tambah</a>
-                    @endif
+                            Import Data</button>
+                       <a target="_blank" href="{{ route('siswa.export_excel') }}" class="btn btn-success"><i class="fas fa-file-excel"></i> Export Excel</a>
+                    </div>
                 </x-slot>
 
                 <x-table>
@@ -47,7 +53,6 @@
 
 @includeIf('includes.datatables')
 @includeIf('includes.datepicker')
-@include('includes.dropzone')
 
 @push('scripts')
     <script>
@@ -261,6 +266,60 @@
             $(`${modalImport} [name=_method]`).val('POST');
             $(`${modalImport} #spinner-border`).hide();
             resetForm(`${modal} form`);
+        }
+
+        function exportExcel(url, name = 'Mengunduh file ini') {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: true,
+            })
+            swalWithBootstrapButtons.fire({
+                title: 'Apakah anda yakin?',
+                text: 'Setiap data dan informasi yang dikeluarkan/eksport dan/atau unduh/download dari Aplikasi oleh pengguna/user, sepenuhnya menjadi tanggung jawab pengguna/user. ' +
+                    name + ' ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#aaa',
+                confirmButtonText: 'Download !',
+                cancelButtonText: 'Batalkan',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "post",
+                        url: url,
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.status = 200) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
+                            }
+                            table.ajax.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            // Menampilkan pesan error
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Opps! Gagal',
+                                text: xhr.responseJSON.message,
+                                showConfirmButton: true,
+                            });
+
+                            // Refresh tabel atau lakukan operasi lain yang diperlukan
+                            table.ajax.reload();
+                        }
+                    });
+                }
+            });
         }
     </script>
 @endpush

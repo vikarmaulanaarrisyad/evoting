@@ -8,6 +8,8 @@ class Siswa extends Model
 {
     use HasFactory;
 
+    protected $table = 'siswas';
+
     public function statusColor()
     {
         $color = '';
@@ -25,5 +27,4 @@ class Siswa extends Model
 
         return $color;
     }
-    
 }
