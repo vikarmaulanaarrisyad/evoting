@@ -66,7 +66,7 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="" class="nav-link {{ request()->is('admin/perlengkapan*') ? 'active' : '' }}">
+                         <a href="{{ route('kandidat.index') }}" class="nav-link {{ request()->is('kandidat*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-user"></i>
                              <p>
                                  Data Kandidat

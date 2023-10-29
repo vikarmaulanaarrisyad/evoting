@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{
     DashboardController,
+    KandidatController,
     KelasController,
     PemilihanController,
     SiswaController,
@@ -45,8 +46,11 @@ Route::group([
         Route::resource('/siswa', SiswaController::class);
         Route::get('/siswa/export/excel', [SiswaController::class, 'exportExcel'])->name('siswa.export_excel');
         Route::post('/siswa/import-excel', [SiswaController::class, 'importExcel'])->name('siswa.import_excel');
+        Route::get('/ajax/siswa/search', [SiswaController::class, 'ajaxSearch'])->name('siswa.search');
 
         // Kandidat
+        Route::get('/kandidat/data', [KandidatController::class, 'data'])->name('kandidat.data');
+        Route::resource('/kandidat', KandidatController::class)->except('edit', 'create');
     });
 
     Route::group([

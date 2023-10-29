@@ -206,9 +206,22 @@ class SiswaController extends Controller
     public function exportExcel()
     {
         $siswa = Siswa::all();
-        $data = $siswa->setHidden(['photo', 'created_at', 'updated_at', 'user_id', 'id','photo', 'tingkat_siswa'])->toArray();
+        $data = $siswa->setHidden(['photo', 'created_at', 'updated_at', 'user_id', 'id', 'photo', 'tingkat_siswa'])->toArray();
         $excel = new SiswaExport($data);
 
         return Excel::download($excel, 'Daftar_Pemilih_' . date('Y-m-d-his') . '.xlsx');
+    }
+
+    /**
+     *  Search Siswa
+     */
+
+    public function ajaxSearch(Request $request)
+    {
+        $keyword = $request->get('q');
+
+        $siswa = Siswa::where('nama_siswa', "LIKE", "%$keyword%")->get();
+
+        return $siswa;
     }
 }

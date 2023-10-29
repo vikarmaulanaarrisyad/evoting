@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kandidat;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class KandidatController extends Controller
 {
@@ -12,7 +14,8 @@ class KandidatController extends Controller
      */
     public function index()
     {
-        //
+        $kandidats = Kandidat::with('siswa')->get();
+        return view('admin.kandidat.index', compact('kandidats'));
     }
 
     /**
@@ -28,7 +31,28 @@ class KandidatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'siswa_id' => 'required|array',
+        ];
+
+        $message = [
+            'siswa_id.required' => 'Kandidat wajib diisi',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $message);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'message' => 'Silahkan periksa kembali inputan anda.'], 422);
+        }
+
+        foreach ($request->siswa_id as  $siswaId) {
+            Kandidat::updateOrCreate(
+                ['siswa_id' => $siswaId,],
+                ['siswa_id' => $siswaId]
+            );;
+        }
+
+        return response()->json(['message' => 'Data berhasil disimpan.']);
     }
 
     /**
