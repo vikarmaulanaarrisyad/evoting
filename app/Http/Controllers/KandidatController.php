@@ -19,6 +19,39 @@ class KandidatController extends Controller
     }
 
     /**
+     * Display a listing of the datatable.
+     */
+    public function data(Request $request)
+    {
+        $query = Kandidat::with('siswa');
+
+        return datatables($query)
+            ->addIndexColumn()
+            ->editColumn('foto', function ($kandidat) {
+                return ''; // Anda mungkin ingin menampilkan gambar profil di sini
+            })
+            ->editColumn('siswa', function ($kandidat) {
+                return $kandidat->siswa->nama_siswa;
+            })
+            ->editColumn('tanggal_lahir', function ($kandidat) {
+                return $kandidat->siswa->tanggal_lahir_siswa;
+            })
+            ->editColumn('kelas', function ($kandidat) {
+                return '
+                    <span class="badge badge-info">Aktif tanpa rombel</span>
+                ';
+            })
+            ->addColumn('aksi', function ($kandidat) {
+                return '
+            <a href="' . route('kandidat.show', $kandidat->id) . '" class="btn btn-sm btn-primary"><i class="fas fa-search-plus"></i></a>
+            <button onclick="deleteData(`' . route('kandidat.destroy', $kandidat->id) . '`, `' . $kandidat->siswa->nama_siswa . '`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+        ';
+            })
+            ->escapeColumns([])
+            ->make(true);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -60,7 +93,7 @@ class KandidatController extends Controller
      */
     public function show(Kandidat $kandidat)
     {
-        //
+        return view('admin.kandidat.show', compact('kandidat'));
     }
 
     /**
@@ -84,6 +117,8 @@ class KandidatController extends Controller
      */
     public function destroy(Kandidat $kandidat)
     {
-        //
+        $kandidat->delete();
+
+        return response()->json(['message' => 'Data berhasil dihapus']);
     }
 }

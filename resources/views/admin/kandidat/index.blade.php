@@ -21,47 +21,19 @@
                     @endif
                 </x-slot>
 
-                <div class="row">
-                    @foreach ($kandidats as $kandidat)
-                        <div class="col-lg-6 col-6 col-md-6">
-                            <div class="card">
-                                <div class="card-header bg-primary">
-                                    {{ $kandidat->siswa->nama_siswa }}
-                                </div>
-                                <img class="card-img-top d-flex justify-content-center mt-3"
-                                    src="{{ asset('AdminLTE/dist/img/user1-128x128.jpg') }}" alt="Card image cap"
-                                    style="width: 65%;margin-left: auto; margin-right: auto">
-                                <div class="card-body">
-                                    {{--  <h5 class="card-title">Title</h5>
-                                    <p class="card-text">Content</p>  --}}
-                                    <table class="table table-light" style="width: 100%">
-                                        <tbody>
-                                            <tr>
-                                                <td>Visi</td>
-                                                <td>:</td>
-                                                <td>
-                                                    {{ $kandidat->visi_kandidat ?? 'Kandidat belum mengisi visi' }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Misi</td>
-                                                <td>:</td>
-                                                <td>
-                                                    {{ $kandidat->misi_kandidat ?? 'Kandidat belum mengisi misi' }}
+                <x-table>
+                    <x-slot name="thead">
+                        <tr>
+                            <th>No</th>
+                            <th>Foto</th>
+                            <th>Nama</th>
+                            <th>Tanggal Lahir</th>
+                            <th>Kelas</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </x-slot>
+                </x-table>
 
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="card-footer">
-                                    {{ $kandidat->periode_id ?? 'Belum ada periode' }}
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-
-                </div>
             </x-card>
         </div>
     </div>
@@ -92,7 +64,7 @@
                 "processing": "Mohon bersabar..."
             },
             ajax: {
-                url: '{{ route('kelas.data') }}',
+                url: '{{ route('kandidat.data') }}',
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -100,17 +72,20 @@
                     sortable: false
                 },
                 {
-                    data: 'nama_kelas',
+                    data: 'foto',
+                    searchable: false,
+                    sortable: false
+                },
+                {
+                    data: 'siswa',
+                },
+                {
+                    data: 'tanggal_lahir',
                     searchable: false,
                     sortable: false
                 },
                 {
                     data: 'kelas',
-                    searchable: false,
-                    sortable: false
-                },
-                {
-                    data: 'jumlah_siswa',
                     searchable: false,
                     sortable: false
                 },

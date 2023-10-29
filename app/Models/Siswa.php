@@ -27,4 +27,9 @@ class Siswa extends Model
 
         return $color;
     }
+
+    public function kandidat()
+    {
+        return $this->hasMany(Kandidat::class);
+    }
 }
