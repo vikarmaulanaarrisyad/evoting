@@ -12,7 +12,7 @@ class CronTes extends Command
      *
      * @var string
      */
-    protected $signature = 'app:cron-tes';
+    protected $signature = 'cron:log';
 
     protected $Domainesia = 'cron:log';
 
