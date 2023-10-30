@@ -74,7 +74,7 @@
             </x-card>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6 col-md-6">
             <x-card>
                 <div class="row">
                     <div class="col-lg-12">
