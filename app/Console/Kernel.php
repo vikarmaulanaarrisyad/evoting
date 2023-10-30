@@ -40,7 +40,6 @@ class Kernel extends ConsoleKernel
             }
         })->dailyAt('23:59');
 
-        $schedule->command('cron:log')->everyMinute(); // menambahkan ini
     }
 
     protected function commands()
